@@ -1,3 +1,7 @@
+/*
+* Shorter version; use this for easier understanding before going into WebServer.js
+*/
+
 const net = require('net');
 const server = net.createServer();
 server.on('connection', handleConnection);
@@ -27,16 +31,14 @@ function handleConnection(socket) {
         let remaining = reqBuffer.slice(marker + 4);
         // The header is everything we read, up to and not including \r\n\r\n
         reqHeader = reqBuffer.slice(0, marker).toString();
-        // This pushes the extra data we read back to the socket's readable stream
-        socket.unshift(remaining);
+        // This pushes the extra data we read back to the socket's readable stream, allowing us to pass this socket along to our user in case they need to read from it.
+        socket.unshift(remaining);  
         break;
       }
     }
-    console.log(`Request header:\n${reqHeader}`);
+    console.log(`Request header:\n${reqHeader}`); // At this point, we've stopped reading from the socket and have the header as a string
 
-    // At this point, we've stopped reading from the socket and have the header as a string
-    // If we wanted to read the whole request body, we would do this:
-
+    // If we wanted to read the whole request body:
     reqBuffer = new Buffer.from('');
     while((buf = socket.read()) !== null) {
       reqBuffer = Buffer.concat([reqBuffer, buf]);
