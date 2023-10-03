@@ -1,8 +1,6 @@
 /**
  * Stream API allows user to access streams of data received over the network and process them as desired 
- *
- * The code is a bit longer because we need some logic to decide when to stop reading from the stream. 
- * This separates the header from the body and let the web server user to determine what to do with the body.
+ * This is the full version of the web server 
  */
 
 const net = require('net');
